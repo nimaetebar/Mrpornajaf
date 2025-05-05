@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>یازدهم ریاضی 1</title>
+  <style>
+    @font-face {
+      font-family: 'Vazir';
+      src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.eot');
+      src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.eot?#iefix') format('embedded-opentype'),
+           url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.woff2') format('woff2'),
+           url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.woff') format('woff'),
+           url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root {
+      --primary-color: #8e44ad;
+      --secondary-color: #6c3483;
+      --accent-color: #d35400;
+      --dark-bg: #0f0f1a;
+      --card-bg: #1a1a2e;
+      --text-primary: #f5f5f5;
+      --text-secondary: #bdc3c7;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Vazir', 'Tahoma', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-primary);
+      line-height: 2;
+      text-align: right;
+      direction: rtl;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    /* Loading Animation */
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--dark-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loading-container.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-animation {
+      display: flex;
+      justify-content: center;
+    }
+
+    .loading-dot {
+      width: 15px;
+      height: 15px;
+      margin: 0 5px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    .loading-dot:nth-child(2) {
+      animation-delay: 0.2s;
+      background-color: var(--accent-color);
+    }
+
+    .loading-dot:nth-child(3) {
+      animation-delay: 0.4s;
+      background-color: #2ecc71;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Modern Header */
+    header {
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+      margin-bottom: 50px;
+    }
+
+    .header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      transform: skewY(-3deg);
+      transform-origin: top left;
+      z-index: -1;
+      box-shadow: var(--shadow);
+    }
+
+    .header-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="rgba(255,255,255,0.03)" width="50" height="50" x="0" y="0"/><rect fill="rgba(255,255,255,0.03)" width="50" height="50" x="50" y="50"/></svg>');
+      opacity: 0.3;
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 90px 20px 70px;
+      position: relative;
+    }
+
+    .header-title {
+      font-size: 42px;
+      font-weight: bold;
+      color: white;
+      margin: 0;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      display: inline-block;
+    }
+
+    .header-title::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 4px;
+      background-color: var(--accent-color);
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .header-subtitle {
+      font-size: 18px;
+      margin-top: 30px;
+      opacity: 0.95;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Main Content */
+    main {
+      padding: 35px;
+      text-align: justify;
+      max-width: 850px;
+      margin: 0 auto 100px;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: 20px;
+      position: relative;
+      z-index: 2;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    main::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--accent-color);
+      border-radius: 10px;
+      z-index: -1;
+      opacity: 0.6;
+      transform: rotate(45deg);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      object-fit: cover;
+      max-height: 500px;
+    }
+
+    img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 2.2;
+      text-align: justify;
+      padding: 0 10px;
+    }
+
+    .highlight {
+      color: var(--primary-color);
+      font-weight: bold;
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--accent-color);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    .highlight:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .signature {
+      text-align: left;
+      margin-top: 40px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      padding-top: 20px;
+    }
+
+    .signature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(to right, var(--primary-color), transparent);
+    }
+
+    /* Footer */
+    footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+      margin-top: auto;
+      overflow: hidden;
+    }
+
+    .footer-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .footer-highlight {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .footer-decoration {
+      position: absolute;
+      bottom: -30px;
+      right: -30px;
+      width: 100px;
+      height: 100px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    .footer-decoration:nth-child(2) {
+      top: -20px;
+      left: -20px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--accent-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-content {
+        padding: 70px 20px 50px;
+      }
+      
+      .header-title {
+        font-size: 32px;
+      }
+      
+      .header-subtitle {
+        font-size: 16px;
+        margin-top: 25px;
+      }
+      
+      main {
+        padding: 25px;
+        margin: 0 15px 80px;
+      }
+      
+      p {
+        font-size: 16px;
+        line-height: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loading-container" id="loading">
+    <div class="loading-animation">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-bg"></div>
+    <div class="header-content">
+      <h1 class="header-title">کلاس یازدهم ریاضی ۱</h1>
+      <div class="header-subtitle">دبیرستان فردوسی - سال تحصیلی ۱۴۰۳-۱۴۰۴</div>
+    </div>
+  </header>
+
+  <main>
+    <img src="./Mr_sattari.jpg">
+    <p>
+      <span class="highlight">استاد گران‌قدر، جناب آقای مهدی ستاری هریس،</span><br><br>
+
+      با فرارسیدن پایان سال تحصیلی، ما دانش‌آموزان کلاس یازدهم ریاضی ۱ دبیرستان فردوسی، بر خود لازم می‌دانیم از زحمات بی‌دریغ، دانش گسترده و منش الهام‌بخش شما نهایت تقدیر و تشکر را به عمل آوریم.<br><br>
+
+      شما صرفاً آموزگار ما نبودید؛ بلکه چراغ راهی بودید که مسیر اندیشیدن، پرسشگری، تلاش و امید را برایمان روشن ساختید. حضور شما در کلاس، فراتر از آموزش بود؛ نشانی از تعهد، دلسوزی و عشق به تعلیم.<br><br>
+
+      از اینکه افتخار شاگردی‌تان را داشتیم، به خود می‌بالیم و این توفیق را یکی از ارزشمندترین دستاوردهای سال تحصیلی‌مان می‌دانیم.<br><br>
+
+      <div class="signature">
+        با آرزوی تندرستی، کامیابی و آرامشی پایدار برای شما،<br>
+        شاگردان ارادتمندتان
+      </div>
+    </p>
+  </main>
+
+  <footer>
+    <div class="footer-decoration"></div>
+    <div class="footer-decoration"></div>
+    <div class="footer-content">
+      <div class="footer-text">طراحی و ارائه با احترام از طرف</div>
+      <div class="footer-text footer-highlight">دانش‌آموزان کلاس یازدهم ریاضی ۱</div>
+      <div class="footer-text">دبیرستان فردوسی - سال تحصیلی ۱۴۰۳-۱۴۰۴</div>
+    </div>
+  </footer>
+
+  <script>
+    // Loading animation
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.getElementById('loading').classList.add('hidden');
+        document.body.classList.add('loaded');
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
